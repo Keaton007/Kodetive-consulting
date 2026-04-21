@@ -16,8 +16,8 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "Keaton's Dev Showcase",
-  description: "Full-stack developer showcase featuring projects and skills",
+  title: "Kodetive Consulting",
+  description: "Kodetive Consulting — full-stack development, projects, and capabilities.",
 };
 
 export default function RootLayout({
