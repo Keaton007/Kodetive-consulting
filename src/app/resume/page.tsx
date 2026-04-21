@@ -1,45 +1,38 @@
 "use client";
+import { useRouter } from 'next/navigation';
 
-import React from 'react';
-import { FaDownload, FaArrowLeft } from 'react-icons/fa';
-import Link from 'next/link';
-import styles from './resume.module.css';
-
-const ResumePage = () => {
-  const handleDownload = () => {
-    const link = document.createElement('a');
-    link.href = '/Keaton Jones Resume.docx';
-    link.download = 'Keaton Jones Resume.docx';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
+export default function ResumePage() {
+  const router = useRouter();
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <Link href="/" className={styles.backButton}>
-          <FaArrowLeft className={styles.backIcon} />
-          Back to Portfolio
-        </Link>
-        <h1 className={styles.title}>Keaton Jones - Resume</h1>
-        <button onClick={handleDownload} className={styles.downloadButton}>
-          <FaDownload className={styles.downloadIcon} />
-          Download Resume
-        </button>
-      </div>
-
-      <div className={styles.resumeContainer}>
-        <div className={styles.resume}>
+    <div className="min-h-screen pt-24">
+      <div className="mx-auto max-w-[var(--content-max)] px-6">
+        <div className="flex items-center justify-between border-b border-[var(--rule)] pb-6">
+          <button
+            onClick={() => router.back()}
+            className="font-[family-name:var(--font-mono)] text-[12px] uppercase tracking-[0.15em] text-[var(--fg-muted)] transition-colors hover:text-[var(--fg)]"
+          >
+            ← Back
+          </button>
+          <h1 className="font-[family-name:var(--font-display)] text-[clamp(28px,3vw,40px)] leading-tight tracking-tight">
+            Resume
+          </h1>
+          <a
+            href="/Keaton Jones Resume.pdf"
+            download
+            className="font-[family-name:var(--font-mono)] text-[12px] uppercase tracking-[0.15em] text-[var(--fg-muted)] transition-colors hover:text-[var(--accent)]"
+          >
+            Download PDF ↓
+          </a>
+        </div>
+        <div className="mt-8 overflow-hidden border border-[var(--rule)]">
           <iframe
-            src="/Keaton Jones Resume.docx"
-            className={styles.resumeIframe}
+            src="/Keaton Jones Resume.pdf#toolbar=0"
+            className="block h-[80vh] w-full"
             title="Keaton Jones Resume"
           />
         </div>
       </div>
     </div>
   );
-};
-
-export default ResumePage;
+}
