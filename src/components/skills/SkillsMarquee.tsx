@@ -3,10 +3,25 @@ import { motion } from 'framer-motion';
 import { useSiteReducedMotion } from '@/components/interactions/useSiteReducedMotion';
 import { CORE, PLATFORM, type Skill } from './skills';
 
-function Chip({ label }: { label: string }) {
+function Chip({ skill }: { skill: Skill }) {
+  const Icon = skill.icon;
   return (
-    <span className="inline-flex h-10 items-center rounded-full border border-[var(--rule)] px-4 font-[family-name:var(--font-mono)] text-[12px] uppercase tracking-[0.15em] text-[var(--fg)] transition-transform duration-[var(--dur-1)] hover:-translate-y-[2px] hover:text-[var(--accent)]">
-      {label}
+    <span
+      className="group/chip inline-flex h-10 items-center gap-2 rounded-full px-4 font-[family-name:var(--font-mono)] text-[12px] uppercase tracking-[0.15em] text-[var(--fg)] transition-[transform,background,color] duration-[var(--dur-1)] hover:-translate-y-[2px] hover:text-[var(--accent-hot)]"
+      style={{
+        background: 'color-mix(in oklab, var(--accent) 6%, var(--bg-elev))',
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.background =
+          'color-mix(in oklab, var(--accent) 18%, var(--bg-elev))';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.background =
+          'color-mix(in oklab, var(--accent) 6%, var(--bg-elev))';
+      }}
+    >
+      <Icon size={16} aria-hidden="true" />
+      {skill.label}
     </span>
   );
 }
@@ -17,7 +32,7 @@ function Row({ items, reverse }: { items: Skill[]; reverse?: boolean }) {
   if (reduced) {
     return (
       <ul className="flex flex-wrap gap-3">
-        {items.map(s => <li key={s.label}><Chip label={s.label} /></li>)}
+        {items.map(s => <li key={s.label}><Chip skill={s} /></li>)}
       </ul>
     );
   }
@@ -29,7 +44,7 @@ function Row({ items, reverse }: { items: Skill[]; reverse?: boolean }) {
         transition={{ duration: 40, ease: 'linear', repeat: Infinity }}
         style={{ paddingInlineEnd: 12 }}
       >
-        {tripled.map((s, i) => <Chip key={`${s.label}-${i}`} label={s.label} />)}
+        {tripled.map((s, i) => <Chip key={`${s.label}-${i}`} skill={s} />)}
       </motion.div>
     </div>
   );
@@ -44,8 +59,10 @@ export function SkillsMarquee() {
         </h2>
       </div>
       <div className="space-y-4">
-        <Row items={CORE} />
-        <Row items={PLATFORM} reverse />
+        {/* Top row (CORE) flows left -> right. */}
+        <Row items={CORE} reverse />
+        {/* Bottom row (PLATFORM) flows right -> left. */}
+        <Row items={PLATFORM} />
       </div>
     </section>
   );
