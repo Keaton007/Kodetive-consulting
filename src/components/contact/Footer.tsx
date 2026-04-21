@@ -5,7 +5,7 @@ export function Footer() {
         <span>© {new Date().getFullYear()} Keaton Jones</span>
         <span>Built with Next.js · Framer Motion · R3F</span>
         <a
-          href="https://github.com/keatonjones/kodetive-consulting"
+          href="https://github.com/Keaton007/kodetive-consulting"
           target="_blank"
           rel="noreferrer"
           className="hover:text-[var(--fg)]"

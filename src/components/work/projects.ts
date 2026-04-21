@@ -1,3 +1,5 @@
+export type ExternalLink = { label: string; href: string };
+
 export type Project = {
   slug: string;
   index: string;
@@ -7,6 +9,7 @@ export type Project = {
   stack: string[];
   cover: string;
   summary: string;
+  externalLinks?: ExternalLink[];
 };
 
 export const PROJECTS: Project[] = [
@@ -19,6 +22,10 @@ export const PROJECTS: Project[] = [
     stack: ['React Native', 'Supabase', 'RevenueCat', 'OneSignal'],
     cover: '/images/work/shredder-cover.jpg',
     summary: 'A mobile product — summary to be filled in.',
+    externalLinks: [
+      { label: 'Website', href: 'https://www.tryshredder.com/' },
+      { label: 'App Store', href: 'https://apps.apple.com/gb/app/shredder-find-friends/id6749258218' },
+    ],
   },
   {
     slug: 'stat-ai',
@@ -29,6 +36,10 @@ export const PROJECTS: Project[] = [
     stack: ['React Native', 'OpenAI', 'AppsFlyer', 'RevenueCat'],
     cover: '/images/work/stat-ai-cover.jpg',
     summary: 'An AI-powered mobile app — summary to be filled in.',
+    externalLinks: [
+      { label: 'Website', href: 'https://www.statsports.ai/' },
+      { label: 'App Store', href: 'https://apps.apple.com/us/app/stat-ai-sports-analysis/id6749340975' },
+    ],
   },
   {
     slug: 'unit-converter',
@@ -39,5 +50,8 @@ export const PROJECTS: Project[] = [
     stack: ['Next.js', 'TypeScript', 'Tailwind'],
     cover: '/images/work/unit-converter-cover.jpg',
     summary: 'A focused utility — summary to be filled in.',
+    externalLinks: [
+      { label: 'Website', href: 'https://www.unitconverter.it.com/' },
+    ],
   },
 ];

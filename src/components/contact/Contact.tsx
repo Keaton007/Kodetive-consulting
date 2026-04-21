@@ -1,14 +1,10 @@
-"use client";
-import { useCursor } from '@/components/interactions/CursorProvider';
-
 const LINKS = [
   { label: 'Email', href: 'mailto:Keatonjonesy@gmail.com' },
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/keaton-jones/' },
-  { label: 'GitHub', href: 'https://github.com/keatonjones' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/keaton-jones-577640236/' },
+  { label: 'GitHub', href: 'https://github.com/Keaton007' },
 ];
 
 export function Contact() {
-  const { setCursorState } = useCursor();
   return (
     <section id="contact" aria-labelledby="contact-title" className="border-t border-[var(--rule)] py-28 md:py-40">
       <div className="mx-auto max-w-[var(--content-max)] px-6">
@@ -23,9 +19,6 @@ export function Contact() {
             <li key={l.href}>
               <a
                 href={l.href}
-                data-cursor="link"
-                onPointerEnter={() => setCursorState('link')}
-                onPointerLeave={() => setCursorState('default')}
                 target={l.href.startsWith('http') ? '_blank' : undefined}
                 rel={l.href.startsWith('http') ? 'noreferrer' : undefined}
                 className="text-[var(--fg-muted)] transition-colors hover:text-[var(--accent)]"

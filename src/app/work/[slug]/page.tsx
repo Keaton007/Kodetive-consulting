@@ -30,7 +30,7 @@ export default async function Page({ params }: Params) {
   const Body = CONTENT[slug];
   if (!project || !Body) notFound();
   return (
-    <CaseStudy project={project}>
+    <CaseStudy project={project} externalLinks={project.externalLinks}>
       <Body />
     </CaseStudy>
   );

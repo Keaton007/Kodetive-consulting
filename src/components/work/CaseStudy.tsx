@@ -53,8 +53,14 @@ export function CaseStudy({ project, children, externalLinks }: Props) {
         {externalLinks?.length ? (
           <div className="mt-6 flex flex-wrap gap-6 font-[family-name:var(--font-mono)] text-[12px] uppercase tracking-[0.15em]">
             {externalLinks.map(l => (
-              <a key={l.href} href={l.href} target="_blank" rel="noreferrer" className="hover:text-[var(--accent)]">
-                {l.label} →
+              <a
+                key={l.href}
+                href={l.href}
+                target="_blank"
+                rel="noreferrer"
+                className="underline underline-offset-4 decoration-[var(--rule)] transition-colors hover:text-[var(--accent-hot)] hover:decoration-[var(--accent)]"
+              >
+                {l.label} ↗
               </a>
             ))}
           </div>

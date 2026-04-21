@@ -2,17 +2,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { useCursor } from '@/components/interactions/CursorProvider';
 import type { Project } from './projects';
 
 export function WorkCard({ project, reverse }: { project: Project; reverse?: boolean }) {
-  const { setCursorState } = useCursor();
   return (
     <Link
       href={`/work/${project.slug}`}
-      data-cursor="link"
-      onPointerEnter={() => setCursorState('link')}
-      onPointerLeave={() => setCursorState('default')}
       className="group block border-t border-[var(--rule)] py-10 md:py-16"
       aria-label={`View case study — ${project.title}`}
     >
