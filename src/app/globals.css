@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
-/* === Palette B — warm editorial dark (active) ============================ */
+/* === Palette — muted stone + forest (active) ============================= */
 :root {
-  --bg: #0B0A08;
-  --bg-elev: #14120F;
-  --fg: #EDE6D6;
-  --fg-muted: #8A8272;
-  --accent: #C9A96A;
-  --accent-hot: #E8C98A;
-  --rule: rgba(237, 230, 214, 0.08);
+  --bg: #E8E4DB;              /* warm stone */
+  --bg-elev: #DED9CE;         /* elevated surface */
+  --fg: #1A1A17;              /* near-black, warm */
+  --fg-muted: #6B6459;        /* warm mid-gray */
+  --accent: #2F4A3A;          /* forest */
+  --accent-hot: #3F6B51;      /* brighter forest for hover/active */
+  --rule: rgba(26, 26, 23, 0.10);
 
   --font-display: var(--font-fraunces);
   --font-sans: var(--font-inter);
@@ -24,6 +24,17 @@
 }
 
 /* === Alternate palettes (uncomment one block to swap) ====================
+:root {
+  // B — warm editorial dark (previous)
+  --bg: #0B0A08;
+  --bg-elev: #14120F;
+  --fg: #EDE6D6;
+  --fg-muted: #8A8272;
+  --accent: #C9A96A;
+  --accent-hot: #E8C98A;
+  --rule: rgba(237, 230, 214, 0.08);
+}
+
 :root {
   // Palette A — deep dark + single luminous accent
   --bg: #0A0A0B;
