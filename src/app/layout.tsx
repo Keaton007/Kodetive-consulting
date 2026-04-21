@@ -1,35 +1,44 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import dynamic from 'next/dynamic';
-// import ChatBubble from '../components/ChatBubble';
+import dynamic from "next/dynamic";
 
-
-const Nav = dynamic(() => import('../components/Nav'), {
-  loading: () => <div>Loading...</div>
+const Nav = dynamic(() => import("../components/Nav"), {
+  loading: () => <div>Loading...</div>,
 });
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const fraunces = Fraunces({
   subsets: ["latin"],
+  variable: "--font-fraunces",
+  display: "swap",
+  axes: ["opsz", "SOFT"],
+});
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+const jetBrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Kodetive Consulting",
-  description: "Kodetive Consulting — full-stack development, projects, and capabilities.",
+  title: "Keaton Jones — Software Engineer",
+  description: "Software engineer building production frontends with taste. Selected work, case studies, and contact.",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={geistSans.variable}>
+    <html
+      lang="en"
+      className={`${fraunces.variable} ${inter.variable} ${jetBrainsMono.variable}`}
+    >
       <body>
+        <a href="#main" className="skip-link">Skip to content</a>
         <Nav />
         {children}
-        {/* <ChatBubble /> */}
       </body>
     </html>
   );
