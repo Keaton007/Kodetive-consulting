@@ -44,3 +44,9 @@ yarn-error.log*
 next-env.d.ts
 
 .vercel
+
+# Claude Code configuration (local-only; remove this line to opt-in to committing)
+/.claude/
+
+# Obsidian vault — local knowledge base, never committed
+/.obsidian-vault/
