@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
 import dynamic from 'next/dynamic';
-import ThemeToggle from '../components/ThemeToggle';
 // import ChatBubble from '../components/ChatBubble';
 
 
@@ -28,7 +27,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={geistSans.variable}>
       <body>
-        <ThemeToggle />
         <Nav />
         {children}
         {/* <ChatBubble /> */}
