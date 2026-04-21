@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import dynamic from "next/dynamic";
-
-const Nav = dynamic(() => import("../components/Nav"), {
-  loading: () => <div>Loading...</div>,
-});
+import { CursorProvider } from "@/components/interactions/CursorProvider";
+import { ScrollProvider } from "@/components/interactions/ScrollProvider";
+import { PageTransition } from "@/components/interactions/PageTransition";
+import { Nav } from "@/components/nav/Nav";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -31,14 +30,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      className={`${fraunces.variable} ${inter.variable} ${jetBrainsMono.variable}`}
-    >
+    <html lang="en" className={`${fraunces.variable} ${inter.variable} ${jetBrainsMono.variable}`}>
       <body>
         <a href="#main" className="skip-link">Skip to content</a>
-        <Nav />
-        {children}
+        <CursorProvider>
+          <ScrollProvider>
+            <Nav />
+            <main id="main">
+              <PageTransition>{children}</PageTransition>
+            </main>
+          </ScrollProvider>
+        </CursorProvider>
       </body>
     </html>
   );
