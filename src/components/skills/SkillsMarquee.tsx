@@ -41,7 +41,7 @@ function Row({ items, reverse }: { items: Skill[]; reverse?: boolean }) {
       <motion.div
         className="flex gap-3 whitespace-nowrap will-change-transform"
         animate={{ x: reverse ? ['-33.333%', '0%'] : ['0%', '-33.333%'] }}
-        transition={{ duration: 40, ease: 'linear', repeat: Infinity }}
+        transition={{ duration: 30, ease: 'linear', repeat: Infinity }}
         style={{ paddingInlineEnd: 12 }}
       >
         {tripled.map((s, i) => <Chip key={`${s.label}-${i}`} skill={s} />)}
@@ -58,11 +58,16 @@ export function SkillsMarquee() {
           Tools &amp; platforms
         </h2>
       </div>
+      {/*
+        Reduced-motion note: prefers-reduced-motion=reduce shows a static
+        wrapped grid of chips instead of the scrolling rows. If the marquee
+        isn't moving, check OS motion settings first.
+      */}
       <div className="space-y-4">
-        {/* Top row (CORE) flows left -> right. */}
-        <Row items={CORE} reverse />
-        {/* Bottom row (PLATFORM) flows right -> left. */}
-        <Row items={PLATFORM} />
+        {/* Top row (CORE) flows right -> left. */}
+        <Row items={CORE} />
+        {/* Bottom row (PLATFORM) flows left -> right. */}
+        <Row items={PLATFORM} reverse />
       </div>
     </section>
   );

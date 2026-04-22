@@ -6,8 +6,8 @@
   --bg-elev: #DED9CE;         /* elevated surface */
   --fg: #1A1A17;              /* near-black, warm */
   --fg-muted: #6B6459;        /* warm mid-gray */
-  --accent: #2F4A3A;          /* forest */
-  --accent-hot: #3F6B51;      /* brighter forest for hover/active */
+  --accent: #2F4A3A;          /* forest — primary */
+  --accent-hot: #C9A96A;      /* champagne gold — hover/active */
   --rule: rgba(26, 26, 23, 0.10);
 
   --font-display: var(--font-fraunces);

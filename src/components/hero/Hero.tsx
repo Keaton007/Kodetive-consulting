@@ -1,7 +1,7 @@
 "use client";
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
-import { HeroShaderText } from './HeroShaderText';
+import { HeroText } from './HeroText';
 import { HeroChrome } from './HeroChrome';
 
 const HeroAmbient = dynamic(() => import('./HeroAmbient'), { ssr: false });
@@ -24,7 +24,7 @@ export function Hero() {
   return (
     <section className="relative h-[100svh] w-full overflow-hidden bg-[var(--bg)]">
       {isMobile ? <HeroAmbientMobile /> : <HeroAmbient />}
-      <HeroShaderText name="Keaton Jones" title="Software Engineer" />
+      <HeroText name="Keaton Jones" title="Software Engineer" />
       <HeroChrome />
     </section>
   );
