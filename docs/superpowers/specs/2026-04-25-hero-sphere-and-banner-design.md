@@ -74,7 +74,7 @@ The easing lives in the vertex shader so the curve applies uniformly without a J
 
 **Chrome look.**
 - `metalness = 1.0`, `roughness = 0.12`.
-- Drei `<Environment>` with a packaged HDR (e.g., `night` preset or a custom dark-studio map ≤200KB).
+- Drei `<Environment files="/env/hero.hdr" />` loading a locally bundled HDR placed in `public/env/hero.hdr` (≤200KB). Local instead of Drei's CDN preset to avoid runtime dependency on an external host.
 - Directional rim light at +45° azimuth, tinted icy-blue (`var(--accent)`) — produces the cool edge visible on the rest sphere.
 - Fresnel term added in the patched shader, brightening silhouette edges with the same icy-blue tone — reads as a glowing rim at both rest and explode peak.
 
@@ -94,7 +94,7 @@ Same scene, same component shape. Differences:
 - ~80 ambient droplets (vs 250).
 - Per-instance icosphere detail=0 (~12 verts).
 - `MeshStandardMaterial` with `roughness = 0.2`, no fresnel patch — env reflections alone carry the chrome look.
-- Smaller HDR (≤80KB) or procedural cube-camera fallback if size matters more than fidelity.
+- Same locally bundled HDR as desktop (one-shot load, not per-frame) — no separate mobile env asset.
 - `dpr={[1, 1.25]}`.
 - `frameloop="always"` retained — scroll-locked needs continuous frames.
 
@@ -114,15 +114,15 @@ Estimated mobile bundle addition: ~120KB gzipped.
 
 **Edge fades.** ~80px gradient masks on left and right via `mask-image: linear-gradient(to right, transparent, black 80px, black calc(100% - 80px), transparent)`. Chips fade in/out at the edges instead of clipping hard.
 
-**Hover.** Pause the marquee while pointer is over the strip. Implemented by toggling the `animate` prop on the `motion.div` (or by keeping `animate` constant and stopping the value via a Framer controls pattern — pick whichever produces no jump on resume).
+**Hover.** Pause the marquee while pointer is over the strip. Implementation: `useAnimationControls()` from Framer Motion; on mount, `controls.start({ x: '-33.333%' }, { duration: 40, ease: 'linear', repeat: Infinity })`. On `onHoverStart`, `controls.stop()`. On `onHoverEnd`, restart with the same parameters (Framer resumes from the current `x`, no jump). Pointer-only — keyboard users see no change since chips aren't interactive.
 
 **Reduced motion.** Static wrapped grid of chips inside the banner strip when `useSiteReducedMotion()` returns true. Existing pattern from `SkillsMarquee.tsx` ports over.
 
 ## Scroll wiring
 
 - `Hero.tsx` attaches a `ref` to the hero `<section>` and calls `useScroll({ target: heroRef, offset: ["start start", "end start"] })`. Result: a `MotionValue<number>` going 0 → 1 across the full hero height.
-- The `MotionValue` (or a plain `useRef<number>` updated from a subscriber) is passed down to the sphere component.
-- Inside the R3F scene, a `useFrame` callback reads the current value and writes it to `material.uniforms.uExplode.value` directly. No React state in the loop.
+- The `MotionValue<number>` is passed down to the sphere component as a prop.
+- Inside the R3F scene, a `useFrame` callback calls `motionValue.get()` and writes the result to `material.uniforms.uExplode.value` directly. No React state in the loop, no `useRef` mirror.
 - `easeOutQuart` is applied inside the vertex shader, not in JS. Reverse is free — same lerp, run backward.
 - Reduced motion: `uExplode` is locked at 0, rotation frozen, ambient droplets static. Scene still renders, GPU loop is short-circuited.
 
