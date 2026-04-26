@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
-/* === Palette — muted stone + forest (active) ============================= */
+/* === Palette — dark + icy-blue (active) ================================ */
 :root {
-  --bg: #E8E4DB;              /* warm stone */
-  --bg-elev: #DED9CE;         /* elevated surface */
-  --fg: #1A1A17;              /* near-black, warm */
-  --fg-muted: #6B6459;        /* warm mid-gray */
-  --accent: #2F4A3A;          /* forest — primary */
-  --accent-hot: #C9A96A;      /* champagne gold — hover/active */
-  --rule: rgba(26, 26, 23, 0.10);
+  --bg: #07090C;              /* deep cool near-black */
+  --bg-elev: #0F141B;         /* elevated surface */
+  --fg: #E6EDF5;              /* pale cool */
+  --fg-muted: #8A95A4;        /* cool mid-gray */
+  --accent: #6FB6FF;          /* icy blue — primary */
+  --accent-hot: #B8DEFF;      /* lighter icy blue — hover/active */
+  --rule: rgba(230, 237, 245, 0.10);
 
   --font-display: var(--font-fraunces);
   --font-sans: var(--font-inter);
