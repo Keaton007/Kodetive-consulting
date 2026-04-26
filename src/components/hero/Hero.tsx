@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { HeroText } from './HeroText';
 import { HeroChrome } from './HeroChrome';
+import { HeroBanner } from './HeroBanner';
 
 const HeroAmbient = dynamic(() => import('./HeroAmbient'), { ssr: false });
 const HeroAmbientMobile = dynamic(() => import('./HeroAmbientMobile'), { ssr: false });
@@ -26,6 +27,7 @@ export function Hero() {
       {isMobile ? <HeroAmbientMobile /> : <HeroAmbient />}
       <HeroText name="Keaton Jones" title="Software Engineer" />
       <HeroChrome />
+      <HeroBanner />
     </section>
   );
 }
