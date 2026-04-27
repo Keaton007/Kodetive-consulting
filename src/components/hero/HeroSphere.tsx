@@ -1,7 +1,7 @@
 "use client";
-import { Canvas } from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
-import { Suspense, useMemo } from 'react';
+import { Suspense, useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 
 const INSTANCE_COUNT = 4000;
@@ -46,6 +46,11 @@ function makeSeeds(count: number): Float32Array {
 }
 
 function ParticleSphere() {
+  // Stores the patched shader so useFrame can write uniforms each frame.
+  const shaderRef = useRef<{
+    uniforms: { uExplode: { value: number }; uTime: { value: number } };
+  } | null>(null);
+
   const geometry = useMemo(() => {
     const ico = new THREE.IcosahedronGeometry(PARTICLE_RADIUS, 1);
     const geo = new THREE.InstancedBufferGeometry();
@@ -63,6 +68,7 @@ function ParticleSphere() {
     );
     geo.setAttribute('aSeed', new THREE.InstancedBufferAttribute(makeSeeds(INSTANCE_COUNT), 1));
     geo.instanceCount = INSTANCE_COUNT;
+    ico.dispose();
     return geo;
   }, []);
 
@@ -72,26 +78,66 @@ function ParticleSphere() {
       metalness: 1.0,
       roughness: 0.12,
     });
+    // Fix A: stable cache key so shader compilation isn't shared across patched materials.
+    mat.customProgramCacheKey = () => 'particle-sphere-v1';
     mat.onBeforeCompile = (shader) => {
+      shader.uniforms.uExplode = { value: 0 };
+      shader.uniforms.uTime = { value: 0 };
       shader.vertexShader = shader.vertexShader
         .replace(
           '#include <common>',
           `
           #include <common>
+          uniform float uExplode;
+          uniform float uTime;
           attribute vec3 aRestPos;
           attribute vec3 aExplodePos;
           attribute float aSeed;
+
+          float easeOutQuart(float x) {
+            return 1.0 - pow(1.0 - x, 4.0);
+          }
+
+          vec3 hashJitter(float seed, float t) {
+            return vec3(
+              sin(seed * 12.9898 + t * 0.6),
+              sin(seed * 78.233  + t * 0.4),
+              sin(seed * 37.719  + t * 0.5)
+            ) * 0.05;
+          }
           `,
         )
+        // Fix C: replace just the `transformed = position` line, not the whole include —
+        // preserves morphtarget/skinning scaffolding inside <begin_vertex>.
         .replace(
-          '#include <begin_vertex>',
+          'vec3 transformed = vec3( position );',
           `
-          vec3 transformed = position + aRestPos;
+          float t = easeOutQuart(uExplode);
+          vec3 instanceCenter = mix(aRestPos, aExplodePos, t) + hashJitter(aSeed, uTime) * uExplode;
+          vec3 transformed = vec3( position ) + instanceCenter;
           `,
         );
+      shaderRef.current = shader as unknown as {
+        uniforms: { uExplode: { value: number }; uTime: { value: number } };
+      };
     };
     return mat;
   }, []);
+
+  // Fix B: dispose imperatively created GPU resources on unmount.
+  useEffect(() => {
+    return () => {
+      geometry.dispose();
+      material.dispose();
+    };
+  }, [geometry, material]);
+
+  useFrame((state) => {
+    const s = shaderRef.current;
+    if (!s) return;
+    s.uniforms.uTime.value = state.clock.getElapsedTime();
+    // uExplode is wired to scroll progress in Task 11.
+  });
 
   return <mesh geometry={geometry} material={material} />;
 }
