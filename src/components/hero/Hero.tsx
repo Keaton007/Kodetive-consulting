@@ -5,7 +5,7 @@ import { HeroText } from './HeroText';
 import { HeroChrome } from './HeroChrome';
 import { HeroBanner } from './HeroBanner';
 
-const HeroAmbient = dynamic(() => import('./HeroAmbient'), { ssr: false });
+const HeroSphere = dynamic(() => import('./HeroSphere'), { ssr: false });
 const HeroAmbientMobile = dynamic(() => import('./HeroAmbientMobile'), { ssr: false });
 
 function useIsMobile() {
@@ -24,7 +24,7 @@ export function Hero() {
   const isMobile = useIsMobile();
   return (
     <section className="relative h-[100svh] w-full overflow-hidden bg-[var(--bg)]">
-      {isMobile ? <HeroAmbientMobile /> : <HeroAmbient />}
+      {isMobile ? <HeroAmbientMobile /> : <HeroSphere />}
       <HeroText name="Keaton Jones" title="Software Engineer" />
       <HeroChrome />
       <HeroBanner />
