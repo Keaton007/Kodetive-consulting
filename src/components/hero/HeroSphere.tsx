@@ -48,8 +48,14 @@ function makeSeeds(count: number): Float32Array {
 function ParticleSphere() {
   // Stores the patched shader so useFrame can write uniforms each frame.
   const shaderRef = useRef<{
-    uniforms: { uExplode: { value: number }; uTime: { value: number } };
+    uniforms: {
+      uExplode: { value: number };
+      uTime: { value: number };
+      uAccent: { value: THREE.Color };
+    };
   } | null>(null);
+
+  const groupRef = useRef<THREE.Group | null>(null);
 
   const geometry = useMemo(() => {
     const ico = new THREE.IcosahedronGeometry(PARTICLE_RADIUS, 1);
@@ -83,6 +89,24 @@ function ParticleSphere() {
     mat.onBeforeCompile = (shader) => {
       shader.uniforms.uExplode = { value: 0 };
       shader.uniforms.uTime = { value: 0 };
+      shader.uniforms.uAccent = { value: new THREE.Color('#6FB6FF') };
+      shader.fragmentShader = shader.fragmentShader
+        .replace(
+          '#include <common>',
+          `
+          #include <common>
+          uniform vec3 uAccent;
+          `,
+        )
+        .replace(
+          '#include <opaque_fragment>',
+          `
+          #include <opaque_fragment>
+          vec3 viewDir = normalize(vViewPosition);
+          float fresnel = pow(1.0 - clamp(dot(normalize(vNormal), viewDir), 0.0, 1.0), 3.0);
+          gl_FragColor.rgb += uAccent * fresnel * 0.55;
+          `,
+        );
       shader.vertexShader = shader.vertexShader
         .replace(
           '#include <common>',
@@ -118,7 +142,11 @@ function ParticleSphere() {
           `,
         );
       shaderRef.current = shader as unknown as {
-        uniforms: { uExplode: { value: number }; uTime: { value: number } };
+        uniforms: {
+          uExplode: { value: number };
+          uTime: { value: number };
+          uAccent: { value: THREE.Color };
+        };
       };
     };
     return mat;
@@ -132,14 +160,22 @@ function ParticleSphere() {
     };
   }, [geometry, material]);
 
-  useFrame((state) => {
+  useFrame((state, delta) => {
     const s = shaderRef.current;
     if (!s) return;
     s.uniforms.uTime.value = state.clock.getElapsedTime();
-    // uExplode is wired to scroll progress in Task 11.
+    const explode = s.uniforms.uExplode.value;
+    if (groupRef.current) {
+      const rotationSpeed = 0.05 * Math.max(0, 1 - explode / 0.15);
+      groupRef.current.rotation.y += rotationSpeed * delta;
+    }
   });
 
-  return <mesh geometry={geometry} material={material} />;
+  return (
+    <group ref={groupRef}>
+      <mesh geometry={geometry} material={material} />
+    </group>
+  );
 }
 
 export default function HeroSphere() {
