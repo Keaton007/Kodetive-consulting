@@ -51,7 +51,6 @@ function ParticleSphere() {
     uniforms: {
       uExplode: { value: number };
       uTime: { value: number };
-      uAccent: { value: THREE.Color };
     };
   } | null>(null);
 
@@ -145,7 +144,6 @@ function ParticleSphere() {
         uniforms: {
           uExplode: { value: number };
           uTime: { value: number };
-          uAccent: { value: THREE.Color };
         };
       };
     };

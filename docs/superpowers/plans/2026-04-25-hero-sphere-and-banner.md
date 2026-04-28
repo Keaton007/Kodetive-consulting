@@ -841,9 +841,9 @@ shader.fragmentShader = shader.fragmentShader
     `,
   )
   .replace(
-    '#include <output_fragment>',
+    '#include <opaque_fragment>',
     `
-    #include <output_fragment>
+    #include <opaque_fragment>
     vec3 viewDir = normalize(vViewPosition);
     float fresnel = pow(1.0 - clamp(dot(normalize(vNormal), viewDir), 0.0, 1.0), 3.0);
     gl_FragColor.rgb += uAccent * fresnel * 0.55;
