@@ -176,6 +176,47 @@ function ParticleSphere() {
   );
 }
 
+const AMBIENT_COUNT = 250;
+const AMBIENT_RADIUS = 0.014;
+const AMBIENT_SPREAD = 3.5;
+
+function AmbientDroplets() {
+  const ref = useRef<THREE.InstancedMesh | null>(null);
+  const seeds = useMemo(() => makeSeeds(AMBIENT_COUNT), []);
+  const basePositions = useMemo(() => {
+    const arr = new Float32Array(AMBIENT_COUNT * 3);
+    for (let i = 0; i < AMBIENT_COUNT; i++) {
+      arr[i * 3 + 0] = (Math.random() - 0.5) * 2 * AMBIENT_SPREAD;
+      arr[i * 3 + 1] = (Math.random() - 0.5) * 2 * AMBIENT_SPREAD;
+      arr[i * 3 + 2] = (Math.random() - 0.5) * 2 * AMBIENT_SPREAD * 0.6;
+    }
+    return arr;
+  }, []);
+  const dummy = useMemo(() => new THREE.Object3D(), []);
+
+  useFrame((state) => {
+    if (!ref.current) return;
+    const t = state.clock.getElapsedTime();
+    for (let i = 0; i < AMBIENT_COUNT; i++) {
+      const seed = seeds[i];
+      const x = basePositions[i * 3 + 0] + Math.sin(t * 0.12 + seed) * 0.05;
+      const y = basePositions[i * 3 + 1] + Math.cos(t * 0.10 + seed * 1.3) * 0.05;
+      const z = basePositions[i * 3 + 2] + Math.sin(t * 0.08 + seed * 0.7) * 0.05;
+      dummy.position.set(x, y, z);
+      dummy.updateMatrix();
+      ref.current.setMatrixAt(i, dummy.matrix);
+    }
+    ref.current.instanceMatrix.needsUpdate = true;
+  });
+
+  return (
+    <instancedMesh ref={ref} args={[undefined, undefined, AMBIENT_COUNT]}>
+      <icosahedronGeometry args={[AMBIENT_RADIUS, 0]} />
+      <meshStandardMaterial color="#ffffff" metalness={1} roughness={0.2} />
+    </instancedMesh>
+  );
+}
+
 export default function HeroSphere() {
   return (
     <div className="pointer-events-none absolute inset-0" aria-hidden="true">
@@ -190,6 +231,7 @@ export default function HeroSphere() {
           <ambientLight intensity={0.15} />
           <directionalLight position={[2, 2, 2]} intensity={0.6} color="#6FB6FF" />
           <ParticleSphere />
+          <AmbientDroplets />
         </Suspense>
       </Canvas>
     </div>
