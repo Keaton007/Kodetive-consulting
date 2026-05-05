@@ -1,6 +1,6 @@
 "use client";
 import { motion, useMotionValue, useAnimationFrame } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSiteReducedMotion } from '@/components/interactions/useSiteReducedMotion';
 import { CORE, PLATFORM, type Skill } from '@/components/skills/skills';
 
@@ -26,16 +26,21 @@ export function HeroBanner() {
   const reduced = useSiteReducedMotion();
   const x = useMotionValue('0%');
   const [paused, setPaused] = useState(false);
+  // SSR + first paint render the static variant so reduced-motion users
+  // never see a marquee flash before hydration swaps it out.
+  const [mounted, setMounted] = useState(false);
   const elapsedRef = useRef(0);
 
+  useEffect(() => setMounted(true), []);
+
   useAnimationFrame((_, delta) => {
-    if (reduced || paused) return;
+    if (reduced || paused || !mounted) return;
     elapsedRef.current = (elapsedRef.current + delta) % CYCLE_MS;
     const progress = elapsedRef.current / CYCLE_MS;
     x.set(`${-RANGE_PCT * progress}%`);
   });
 
-  if (reduced) {
+  if (!mounted || reduced) {
     return (
       <div
         aria-label="Skills and tools"
