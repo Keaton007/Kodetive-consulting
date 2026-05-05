@@ -3,6 +3,8 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
 import { Suspense, useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
+import type { MotionValue } from 'framer-motion';
+import { useSiteReducedMotion } from '@/components/interactions/useSiteReducedMotion';
 
 const INSTANCE_COUNT = 4000;
 const SPHERE_RADIUS = 1.0;
@@ -45,7 +47,8 @@ function makeSeeds(count: number): Float32Array {
   return out;
 }
 
-function ParticleSphere() {
+function ParticleSphere({ progress }: { progress: MotionValue<number> }) {
+  const reduced = useSiteReducedMotion();
   // Stores the patched shader so useFrame can write uniforms each frame.
   const shaderRef = useRef<{
     uniforms: {
@@ -162,7 +165,12 @@ function ParticleSphere() {
     const s = shaderRef.current;
     if (!s) return;
     s.uniforms.uTime.value = state.clock.getElapsedTime();
-    const explode = s.uniforms.uExplode.value;
+    if (reduced) {
+      s.uniforms.uExplode.value = 0;
+      return;
+    }
+    const explode = progress.get();
+    s.uniforms.uExplode.value = explode;
     if (groupRef.current) {
       const rotationSpeed = 0.05 * Math.max(0, 1 - explode / 0.15);
       groupRef.current.rotation.y += rotationSpeed * delta;
@@ -217,7 +225,7 @@ function AmbientDroplets() {
   );
 }
 
-export default function HeroSphere() {
+export default function HeroSphere({ progress }: { progress: MotionValue<number> }) {
   return (
     <div className="pointer-events-none absolute inset-0" aria-hidden="true">
       <Canvas
@@ -230,7 +238,7 @@ export default function HeroSphere() {
           <Environment files="/env/hero.hdr" />
           <ambientLight intensity={0.15} />
           <directionalLight position={[2, 2, 2]} intensity={0.6} color="#6FB6FF" />
-          <ParticleSphere />
+          <ParticleSphere progress={progress} />
           <AmbientDroplets />
         </Suspense>
       </Canvas>

@@ -1,6 +1,7 @@
 "use client";
 import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useScroll } from 'framer-motion';
 import { HeroText } from './HeroText';
 import { HeroChrome } from './HeroChrome';
 import { HeroBanner } from './HeroBanner';
@@ -22,9 +23,17 @@ function useIsMobile() {
 
 export function Hero() {
   const isMobile = useIsMobile();
+  const ref = useRef<HTMLElement | null>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start start', 'end start'],
+  });
   return (
-    <section className="relative h-[100svh] w-full overflow-hidden bg-[var(--bg)]">
-      {isMobile ? <HeroAmbientMobile /> : <HeroSphere />}
+    <section
+      ref={ref}
+      className="relative h-[100svh] w-full overflow-hidden bg-[var(--bg)]"
+    >
+      {isMobile ? <HeroAmbientMobile /> : <HeroSphere progress={scrollYProgress} />}
       <HeroText name="Keaton Jones" title="Software Engineer" />
       <HeroChrome />
       <HeroBanner />
