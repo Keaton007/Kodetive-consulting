@@ -7,7 +7,7 @@ import { HeroChrome } from './HeroChrome';
 import { HeroBanner } from './HeroBanner';
 
 const HeroSphere = dynamic(() => import('./HeroSphere'), { ssr: false });
-const HeroAmbientMobile = dynamic(() => import('./HeroAmbientMobile'), { ssr: false });
+const HeroSphereMobile = dynamic(() => import('./HeroSphereMobile'), { ssr: false });
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(false);
@@ -33,7 +33,11 @@ export function Hero() {
       ref={ref}
       className="relative h-[100svh] w-full overflow-hidden bg-[var(--bg)]"
     >
-      {isMobile ? <HeroAmbientMobile /> : <HeroSphere progress={scrollYProgress} />}
+      {isMobile ? (
+        <HeroSphereMobile progress={scrollYProgress} />
+      ) : (
+        <HeroSphere progress={scrollYProgress} />
+      )}
       <HeroText name="Keaton Jones" title="Software Engineer" />
       <HeroChrome />
       <HeroBanner />
