@@ -1,7 +1,7 @@
 "use client";
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
-import { Suspense, useEffect, useMemo, useRef } from 'react';
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import type { MotionValue } from 'framer-motion';
 import { useSiteReducedMotion } from '@/components/interactions/useSiteReducedMotion';
@@ -197,13 +197,29 @@ function AmbientDroplets() {
 }
 
 export default function HeroSphereMobile({ progress }: { progress: MotionValue<number> }) {
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const [inView, setInView] = useState(true);
+  useEffect(() => {
+    const node = wrapperRef.current;
+    if (!node) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0 },
+    );
+    io.observe(node);
+    return () => io.disconnect();
+  }, []);
   return (
-    <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+    <div
+      ref={wrapperRef}
+      className="pointer-events-none absolute inset-0"
+      aria-hidden="true"
+    >
       <Canvas
         dpr={[1, 1.25]}
         gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
         camera={{ position: [0, 0, 3.2], fov: 45 }}
-        frameloop="always"
+        frameloop={inView ? 'always' : 'never'}
       >
         <Suspense fallback={null}>
           <Environment files="/env/hero.hdr" />
