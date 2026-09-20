@@ -1,15 +1,14 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
+import { Bodoni_Moda, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ScrollProvider } from "@/components/interactions/ScrollProvider";
 import { PageTransition } from "@/components/interactions/PageTransition";
 import { Nav } from "@/components/nav/Nav";
 
-const fraunces = Fraunces({
+const bodoni = Bodoni_Moda({
   subsets: ["latin"],
-  variable: "--font-fraunces",
+  variable: "--font-bodoni",
   display: "swap",
-  axes: ["opsz", "SOFT"],
 });
 const inter = Inter({
   subsets: ["latin"],
@@ -23,13 +22,13 @@ const jetBrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Keaton Jones — Software Engineer",
+  title: "Keaton Jones, Software Engineer",
   description: "Software engineer building production frontends with taste. Selected work, case studies, and contact.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${inter.variable} ${jetBrainsMono.variable}`}>
+    <html lang="en" className={`${bodoni.variable} ${inter.variable} ${jetBrainsMono.variable}`}>
       <body>
         <a href="#main" className="skip-link">Skip to content</a>
         <ScrollProvider>

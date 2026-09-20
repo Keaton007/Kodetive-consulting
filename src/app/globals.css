@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "../styles/liquid-glass.css";
 
 /* === Palette — dark + icy-blue (active) ================================ */
 :root {
@@ -10,7 +11,7 @@
   --accent-hot: #B8DEFF;      /* lighter icy blue — hover/active */
   --rule: rgba(230, 237, 245, 0.10);
 
-  --font-display: var(--font-fraunces);
+  --font-display: var(--font-bodoni);
   --font-sans: var(--font-inter);
   --font-mono: var(--font-jetbrains-mono);
 
@@ -73,14 +74,17 @@
 
 * { box-sizing: border-box; }
 
-html, body {
+html {
   background: var(--bg);
-  color: var(--fg);
-  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
 }
 
 body {
+  /* Body background must stay transparent so the fixed CircuitBackground
+     at z-index: -1 is visible — body bg would otherwise paint over it. */
+  background: transparent;
+  color: var(--fg);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
   min-height: 100vh;
   line-height: 1.6;
 }
@@ -107,6 +111,9 @@ a { color: inherit; text-decoration: none; }
   font-size: 12px;
 }
 .skip-link:focus { top: 8px; }
+
+/* `.glass` and other liquid-glass component styles are in
+   src/styles/liquid-glass.css (imported at the top of this file). */
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

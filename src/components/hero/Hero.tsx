@@ -4,10 +4,9 @@ import { useEffect, useRef, useState } from 'react';
 import { useScroll } from 'framer-motion';
 import { HeroText } from './HeroText';
 import { HeroChrome } from './HeroChrome';
-import { HeroBanner } from './HeroBanner';
 
-const HeroSphere = dynamic(() => import('./HeroSphere'), { ssr: false });
-const HeroSphereMobile = dynamic(() => import('./HeroSphereMobile'), { ssr: false });
+const HeroNetwork = dynamic(() => import('./HeroNetwork'), { ssr: false });
+const HeroNetworkMobile = dynamic(() => import('./HeroNetworkMobile'), { ssr: false });
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(false);
@@ -34,13 +33,12 @@ export function Hero() {
       className="relative h-[100svh] w-full overflow-hidden bg-[var(--bg)]"
     >
       {isMobile ? (
-        <HeroSphereMobile progress={scrollYProgress} />
+        <HeroNetworkMobile progress={scrollYProgress} />
       ) : (
-        <HeroSphere progress={scrollYProgress} />
+        <HeroNetwork progress={scrollYProgress} />
       )}
       <HeroText name="Keaton Jones" title="Software Engineer" />
       <HeroChrome />
-      <HeroBanner />
     </section>
   );
 }

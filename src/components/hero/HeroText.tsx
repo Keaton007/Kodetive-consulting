@@ -17,7 +17,7 @@ export function HeroText({ name, title }: Props) {
 
   const Inner = (
     <div className="flex flex-col items-center text-center">
-      <h1 className="font-[family-name:var(--font-display)] text-[clamp(56px,11vw,220px)] leading-[0.95] tracking-tight text-[var(--fg)]">
+      <h1 className="font-[family-name:var(--font-display)] text-[clamp(56px,11vw,220px)] font-light uppercase leading-[0.95] tracking-[0.02em] text-[var(--fg)]">
         {name}
       </h1>
       <p className="mt-6 md:mt-8 font-[family-name:var(--font-mono)] text-[clamp(12px,1.6vw,18px)] uppercase tracking-[0.3em] text-[var(--fg-muted)]">

@@ -21,7 +21,7 @@ export function Nav() {
         <Link
           href="/"
           className="font-[family-name:var(--font-display)] text-[16px] sm:text-[18px] tracking-tight"
-          aria-label="Kodetive — home"
+          aria-label="Kodetive home"
         >
           Kodetive
         </Link>

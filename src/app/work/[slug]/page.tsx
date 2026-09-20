@@ -21,7 +21,7 @@ type Params = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
   const p = PROJECTS.find(p => p.slug === slug);
-  return p ? { title: `${p.title} — Keaton Jones`, description: p.summary } : {};
+  return p ? { title: `${p.title}, by Keaton Jones`, description: p.summary } : {};
 }
 
 export default async function Page({ params }: Params) {
