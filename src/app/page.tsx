@@ -1,15 +1,13 @@
-import Hero from '@/components/Hero';
-import About from '@/components/About';
-import PersonalShowcase from '@/components/PersonalShowcase';
-import Contact from '@/components/Contact';
+import Script from "next/script";
+import { SITE_MARKUP } from "./site-markup";
 
+// The page is static HTML plus one plain script (public/js/site.js) that runs the
+// WebGL scenes, the scroll stage, the app ring and the detail panel.
 export default function Home() {
   return (
-    <main>
-      <Hero />
-      <About />
-      <PersonalShowcase />
-      <Contact />
-    </main>
+    <>
+      <div id="site" style={{ display: "contents" }} dangerouslySetInnerHTML={{ __html: SITE_MARKUP }} />
+      <Script src="/js/site.js" strategy="afterInteractive" />
+    </>
   );
 }
