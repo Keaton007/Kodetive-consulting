@@ -6,7 +6,7 @@ const description =
   "Web and mobile products from the first architecture call to the store listing, and the hard fixes after. CTO at Shredder and Trot, engineering lead at Continuas AI.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://kodetive.com"),
+  metadataBase: new URL("https://www.kodetive.com"),
   title,
   description,
   alternates: { canonical: "/" },
